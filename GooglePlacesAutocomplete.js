@@ -109,6 +109,7 @@ const GooglePlacesAutocomplete = React.createClass({
     predefinedPlacesAlwaysVisible: React.PropTypes.bool,
     enableEmptySections: React.PropTypes.bool,
     renderDescription: React.PropTypes.func,
+    renderFooter: React.PropTypes.func,
     renderRow: React.PropTypes.func,
     renderLeftButton: React.PropTypes.func,
     renderRightButton: React.PropTypes.func,
@@ -705,6 +706,15 @@ const GooglePlacesAutocomplete = React.createClass({
     );
   },
 
+  _renderFooter() {
+    return (
+      <View>
+        {this.props.renderFooter && this.props.renderFooter()}
+        {this._renderPoweredLogo()}
+      </View>
+    )
+  },
+
   _getListView() {
     if ((this.state.text !== '' || this.props.predefinedPlaces.length || this.props.currentLocation === true) && this.state.listViewDisplayed === true) {
       return (
@@ -717,7 +727,7 @@ const GooglePlacesAutocomplete = React.createClass({
           automaticallyAdjustContentInsets={false}
           {...this.props}
           renderRow={this._renderRow}
-          renderFooter={this._renderPoweredLogo}
+          renderFooter={this._renderFooter}
         />
       );
     }
