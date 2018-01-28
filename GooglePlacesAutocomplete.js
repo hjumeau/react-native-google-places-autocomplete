@@ -598,6 +598,22 @@ export default class GooglePlacesAutocomplete extends Component {
 
   _onFocus = () => this.setState({ listViewDisplayed: true })
 
+  _shouldShowPoweredLogo = () => {
+    if (!this.props.enablePoweredByContainer || this.state.dataSource.length == 0) {
+      return false
+    }
+
+    for (let i = 0; i < this.state.dataSource.length; i++) {
+      let row = this.state.dataSource[i];
+
+      if (!row.hasOwnProperty('isCurrentLocation') && !row.hasOwnProperty('isPredefinedPlace')) {
+        return true
+      }
+    }
+
+    return false
+  }
+
   _renderPoweredLogo = () => {
     if (!this._shouldShowPoweredLogo()) {
       return null
@@ -614,32 +630,15 @@ export default class GooglePlacesAutocomplete extends Component {
         />
       </View>
     );
-  },
+  }
 
-  _renderFooter() {
+  _renderFooter = () => {
     return (
       <View>
         {this.props.renderFooter && this.props.renderFooter()}
         {this._renderPoweredLogo()}
       </View>
     )
-  },
-  }
-
-  _shouldShowPoweredLogo = () => {
-    if (!this.props.enablePoweredByContainer || this.state.dataSource.length == 0) {
-      return false
-    }
-
-    for (let i = 0; i < this.state.dataSource.length; i++) {
-      let row = this.state.dataSource[i];
-
-      if (!row.hasOwnProperty('isCurrentLocation') && !row.hasOwnProperty('isPredefinedPlace')) {
-        return true
-      }
-    }
-
-    return false
   }
 
   _renderLeftButton = () => {
@@ -747,6 +746,7 @@ GooglePlacesAutocomplete.propTypes = {
   enableEmptySections: PropTypes.bool,
   renderDescription: PropTypes.func,
   renderRow: PropTypes.func,
+  renderFooter: PropTypes.func,
   renderLeftButton: PropTypes.func,
   renderRightButton: PropTypes.func,
   listUnderlayColor: PropTypes.string,
